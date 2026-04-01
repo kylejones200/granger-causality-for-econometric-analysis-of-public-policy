@@ -10,7 +10,7 @@ import yaml
 import logging
 import pandas as pd
 from pathlib import Path
-from src.core import ((level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+from src.core import (
     fetch_fred_data,
     test_stationarity,
     apply_differencing,
