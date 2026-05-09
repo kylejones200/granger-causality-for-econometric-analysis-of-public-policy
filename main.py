@@ -42,7 +42,7 @@ def main():
         logging.info(f"Loading data from {args.data_path}...")
         df = pd.read_csv(args.data_path, parse_dates=['date'])
     else:
-                df = fetch_fred_data(
+            df = fetch_fred_data(
             config['data']['series'],
             config['data']['start_date'],
             config['data']['end_date']
