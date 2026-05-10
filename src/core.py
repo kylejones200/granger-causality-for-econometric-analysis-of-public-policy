@@ -46,19 +46,20 @@ def run_granger_test(df: pd.DataFrame, y_col: str, x_col: str, maxlag: int = 4) 
 def plot_time_series(df: pd.DataFrame, col1: str, col2: str,
                     label1: str, label2: str, output_path: Path):
     """Plot two time series with dual y-axes."""
-    fig, ax1 = plt.subplots(figsize=(10, 6))
+                    if plot:
+        fig, ax1 = plt.subplots(figsize=(10, 6))
     
-    ax1.plot(df['date'], df[col1], color="#4A90A4", linewidth=1.2)
-    ax1.set_xlabel('Year')
-    ax1.set_ylabel(label1, color="#4A90A4")
-    ax1.tick_params(axis='y', labelcolor="#4A90A4")
+        ax1.plot(df['date'], df[col1], color="#4A90A4", linewidth=1.2)
+        ax1.set_xlabel('Year')
+        ax1.set_ylabel(label1, color="#4A90A4")
+        ax1.tick_params(axis='y', labelcolor="#4A90A4")
     
-    ax2 = ax1.twinx()
-    ax2.plot(df['date'], df[col2], color="#D4A574", linewidth=1.2)
-    ax2.set_ylabel(label2, color="#D4A574")
-    ax2.tick_params(axis='y', labelcolor="#D4A574")
+        ax2 = ax1.twinx()
+        ax2.plot(df['date'], df[col2], color="#D4A574", linewidth=1.2)
+        ax2.set_ylabel(label2, color="#D4A574")
+        ax2.tick_params(axis='y', labelcolor="#D4A574")
     
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 

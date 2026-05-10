@@ -89,7 +89,7 @@ summary_table = pd.DataFrame(
 
 
 # Minimalist RD plot function
-def minimalist_rd_plot(x, y, title, ylabel, filename, ylim_zero=False):
+def minimalist_rd_plot(x, y, title, ylabel, filename, ylim_zero=False, plot: bool = False):
     lowess_fit = lowess(y, x, frac=0.3)
     lowess_x = lowess_fit[:, 0]
     lowess_y = lowess_fit[:, 1]
@@ -100,26 +100,27 @@ def minimalist_rd_plot(x, y, title, ylabel, filename, ylim_zero=False):
     upper = lowess_y + 1.96 * interp_std
     lower = lowess_y - 1.96 * interp_std
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.scatter(x, y, color="black", s=12, alpha=0.5)
-    ax.plot(lowess_x, lowess_y, color="black", linewidth=1.5)
-    ax.fill_between(lowess_x, lower, upper, color="black", alpha=0.1)
-    ax.axvline(0, color="black", linestyle="--", linewidth=1)
-    ax.set_xlabel("Months from March 2020", fontsize=12)
-    ax.set_ylabel(ylabel, fontsize=12)
-    ax.set_title(title, fontsize=14)
-    if ylim_zero:
-        ax.set_ylim(bottom=0)
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
-    ax.spines["left"].set_position(("outward", 5))
-    ax.spines["bottom"].set_position(("outward", 5))
-    ax.tick_params(direction="out", length=3, width=1)
-    plt.xticks(fontsize=11)
-    plt.yticks(fontsize=11)
-    plt.tight_layout()
-    plt.savefig(filename)
-    plt.show()
+    if plot:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.scatter(x, y, color="black", s=12, alpha=0.5)
+        ax.plot(lowess_x, lowess_y, color="black", linewidth=1.5)
+        ax.fill_between(lowess_x, lower, upper, color="black", alpha=0.1)
+        ax.axvline(0, color="black", linestyle="--", linewidth=1)
+        ax.set_xlabel("Months from March 2020", fontsize=12)
+        ax.set_ylabel(ylabel, fontsize=12)
+        ax.set_title(title, fontsize=14)
+        if ylim_zero:
+            ax.set_ylim(bottom=0)
+        ax.spines["right"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.spines["left"].set_position(("outward", 5))
+        ax.spines["bottom"].set_position(("outward", 5))
+        ax.tick_params(direction="out", length=3, width=1)
+        plt.xticks(fontsize=11)
+        plt.yticks(fontsize=11)
+        plt.tight_layout()
+        plt.savefig(filename)
+        plt.show()
 
 
 # Generate RD plots
