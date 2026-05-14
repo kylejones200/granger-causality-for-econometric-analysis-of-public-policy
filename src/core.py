@@ -18,7 +18,7 @@ def fetch_fred_data(series: list, start_date: str, end_date: str) -> pd.DataFram
     dfs = []
     for s in series:
         df = web.DataReader(s, 'fred', start_date, end_date)
-        dfs.append(df)
+        pd.concat([dfs, df])
     
     return pd.concat(dfs, axis=1)
 
