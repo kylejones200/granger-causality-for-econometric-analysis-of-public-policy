@@ -46,7 +46,7 @@ def run_granger_test(df: pd.DataFrame, y_col: str, x_col: str, maxlag: int = 4) 
 def plot_time_series(df: pd.DataFrame, col1: str, col2: str,
                     label1: str, label2: str, output_path: Path):
     """Plot two time series with dual y-axes."""
-                    if plot:
+    if plot:
         fig, ax1 = plt.subplots(figsize=(10, 6))
     
         ax1.plot(df['date'], df[col1], color="#4A90A4", linewidth=1.2)

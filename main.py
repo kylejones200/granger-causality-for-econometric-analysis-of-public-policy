@@ -47,46 +47,46 @@ def main():
             config['data']['start_date'],
             config['data']['end_date']
         )
-        df = df.reset_index().rename(columns={'DATE': 'date'})
+df = df.reset_index().rename(columns={'DATE': 'date'})
         
-        for old_col, new_col in config['data']['column_mapping'].items():
+for old_col, new_col in config['data']['column_mapping'].items():
             if old_col in df.columns:
                 df = df.rename(columns={old_col: new_col})
         
-        if config['data']['save_csv']:
+if config['data']['save_csv']:
             csv_path = Path(config['data']['csv_path'])
             csv_path.parent.mkdir(exist_ok=True)
             df.to_csv(csv_path, index=False)
             logging.info(f"Data saved to {csv_path}")
     
-        for col in ['unemployment_rate', 'consumer_spending']:
+for col in ['unemployment_rate', 'consumer_spending']:
         if col in df.columns:
             result = test_stationarity(df[col], col)
             logging.info(f"{col} ADF Statistic: {result['adf_statistic']:.3f}, "
                  f"p-value: {result['p_value']:.3f}, "
                  f"Stationary: {result['is_stationary']}")
     
-    df = apply_differencing(df, ['unemployment_rate', 'consumer_spending'])
+        df = apply_differencing(df, ['unemployment_rate', 'consumer_spending'])
     
         for col in ['unemployment_rate_diff', 'consumer_spending_diff']:
-        if col in df.columns:
-            result = test_stationarity(df[col], col)
+            if col in df.columns:
+                result = test_stationarity(df[col], col)
             logging.info(f"{col} ADF Statistic: {result['adf_statistic']:.3f}, "
                  f"p-value: {result['p_value']:.3f}, "
                  f"Stationary: {result['is_stationary']}")
     
-    plot_time_series(df, 'unemployment_rate', 'consumer_spending',
+        plot_time_series(df, 'unemployment_rate', 'consumer_spending',
                     'Unemployment Rate (%)', 'Consumer Spending (Billions)',
                     output_dir / 'unemployment_consumer_spending.png')
     
         for test in config['analysis']['test_directions']:
-        logging.info(f"\n{test['description']}")
+            logging.info(f"\n{test['description']}")
         try:
             result = run_granger_test(df, test['y'], test['x'], config['analysis']['maxlag'])
-                    except Exception as e:
+        except Exception as e:
             logging.error(f" running test: {e}")
     
-    logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
+logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
 
 if __name__ == "__main__":
     main()
