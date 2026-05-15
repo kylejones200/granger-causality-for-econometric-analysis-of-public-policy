@@ -5,3 +5,5 @@ statsmodels
 pyyaml
 pytest
 numpy
+yfinance
+seaborn
