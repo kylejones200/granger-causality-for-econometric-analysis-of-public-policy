@@ -1,9 +1,0 @@
-pandas
-matplotlib
-pandas_datareader
-statsmodels
-pyyaml
-pytest
-numpy
-yfinance
-seaborn

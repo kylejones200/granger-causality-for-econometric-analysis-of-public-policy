@@ -6,12 +6,12 @@ Original file is located at
     https://colab.research.google.com/drive/1phwgvd2s-KosHUJR-mKyApmBLHYWuvBx
 """
 
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from statsmodels.nonparametric.smoothers_lowess import lowess
+import numpy as np
+import pandas as pd
 import statsmodels.formula.api as smf
 from pandas_datareader import data as web
+from statsmodels.nonparametric.smoothers_lowess import lowess
 
 # Load data from FRED
 start_date = "2017-09-01"
@@ -88,7 +88,9 @@ summary_table = pd.DataFrame(
 
 
 # Minimalist RD plot function
-def minimalist_rd_plot(x, y, title, ylabel, filename, ylim_zero=False, plot: bool = False):
+def minimalist_rd_plot(
+    x, y, title, ylabel, filename, ylim_zero=False, plot: bool = False
+):
     lowess_fit = lowess(y, x, frac=0.3)
     lowess_x = lowess_fit[:, 0]
     lowess_y = lowess_fit[:, 1]
@@ -122,30 +124,36 @@ def minimalist_rd_plot(x, y, title, ylabel, filename, ylim_zero=False, plot: boo
         plt.show()
 
 
-# Generate RD plots
-minimalist_rd_plot(
-    data["Months"],
-    data["UNRATE"],
-    "Unemployment Rate Around March 2020",
-    "Unemployment Rate (%)",
-    "rd_plot_unrate_minimalist.png",
-    ylim_zero=True,
-)
 
-minimalist_rd_plot(
-    data["Months"],
-    data["Inflation"],
-    "Inflation Rate Around March 2020",
-    "Inflation Rate (YoY, %)",
-    "rd_plot_inflation_minimalist.png",
-)
+def main():
+    # Generate RD plots
+    minimalist_rd_plot(
+        data["Months"],
+        data["UNRATE"],
+        "Unemployment Rate Around March 2020",
+        "Unemployment Rate (%)",
+        "rd_plot_unrate_minimalist.png",
+        ylim_zero=True,
+    )
 
-minimalist_rd_plot(
-    data["Months"],
-    data["CIVPART"],
-    "Labor Force Participation Around March 2020",
-    "Labor Force Participation Rate (%)",
-    "rd_plot_civpart_minimalist.png",
-)
+    minimalist_rd_plot(
+        data["Months"],
+        data["Inflation"],
+        "Inflation Rate Around March 2020",
+        "Inflation Rate (YoY, %)",
+        "rd_plot_inflation_minimalist.png",
+    )
 
-summary_table
+    minimalist_rd_plot(
+        data["Months"],
+        data["CIVPART"],
+        "Labor Force Participation Around March 2020",
+        "Labor Force Participation Rate (%)",
+        "rd_plot_civpart_minimalist.png",
+    )
+
+    summary_table
+
+
+if __name__ == "__main__":
+    main()
