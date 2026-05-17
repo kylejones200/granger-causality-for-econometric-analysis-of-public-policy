@@ -44,3 +44,11 @@ Granger causality tests whether past values of one variable help predict another
 - Both series must be stationary for valid Granger causality tests.
 - Granger causality does not imply true causality, only predictive causality.
 - Results depend on lag selection (maxlag parameter).
+
+## Disclaimer
+
+Educational/demo code only. Not financial, safety, or engineering advice. Use at your own risk. Verify results independently before any production or operational use.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
