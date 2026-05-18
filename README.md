@@ -2,6 +2,14 @@
 
 This project demonstrates Granger causality testing to analyze causal relationships between economic time series variables.
 
+## Business context
+
+Granger causality is a statistical method used to test whether one time series can predict another. It is widely used in econometrics and public policy analysis to identify relationships between variables over time. Unlike traditional causality, Granger causality does not imply a direct cause-and-effect relationship. Instead, it indicates that past values of one variable contain information useful for predicting future values of another.
+
+Granger causality helps policymakers understand dynamic relationships between economic indicators, social variables, and policy outcomes. It answers public policy questions such as whether changes in interest rates influence inflation, if public sentiment predicts policy adoption, or if unemployment rates affect consumer spending.
+
+Granger causality tests whether past values of one time series improve the prediction of another through lag selection, model estimation, and hypothesis testing. Lag selection determines the optimal number of time periods needed to accurately capture temporal dependencies. Two models are then estimated: the unrestricted model includes lagged values of both series, while the restricted model includes only the dependent variable's lagged values. An F-test compares these models, where rejecting the null hypothesis indicates a predictive relationship.
+
 ## Article
 
 Medium article: [Granger Causality for Econometric Analysis](https://medium.com/@kylejones_47003/granger-causality-for-econometric-analysis-of-public-policy-95d748643609)
