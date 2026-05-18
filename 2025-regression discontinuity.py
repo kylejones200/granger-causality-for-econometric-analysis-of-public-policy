@@ -100,7 +100,6 @@ def minimalist_rd_plot(
     interp_std = np.interp(lowess_x, x, rolling_std)
     upper = lowess_y + 1.96 * interp_std
     lower = lowess_y - 1.96 * interp_std
-
     if plot:
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.scatter(x, y, color="black", s=12, alpha=0.5)
@@ -124,7 +123,6 @@ def minimalist_rd_plot(
         plt.show()
 
 
-
 def main():
     # Generate RD plots
     minimalist_rd_plot(
@@ -135,7 +133,6 @@ def main():
         "rd_plot_unrate_minimalist.png",
         ylim_zero=True,
     )
-
     minimalist_rd_plot(
         data["Months"],
         data["Inflation"],
@@ -143,7 +140,6 @@ def main():
         "Inflation Rate (YoY, %)",
         "rd_plot_inflation_minimalist.png",
     )
-
     minimalist_rd_plot(
         data["Months"],
         data["CIVPART"],
@@ -151,7 +147,6 @@ def main():
         "Labor Force Participation Rate (%)",
         "rd_plot_civpart_minimalist.png",
     )
-
     summary_table
 
 

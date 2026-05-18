@@ -23,7 +23,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "config.yaml"
@@ -42,7 +42,6 @@ def main():
         "--output-dir", type=Path, default=None, help="Output directory for plots"
     )
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -50,12 +49,11 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if args.data_path and args.data_path.exists():
         logging.info(f"Loading data from {args.data_path}...")
-        df = pd.read_csv(args.data_path, parse_dates=["date"])
+        pd.read_csv(args.data_path, parse_dates=["date"])
     else:
-        df = fetch_fred_data(
+        fetch_fred_data(
             config["data"]["series"],
             config["data"]["start_date"],
             config["data"]["end_date"],
@@ -84,7 +82,6 @@ for col in ["unemployment_rate", "consumer_spending"]:
         )
 
     df = apply_differencing(df, ["unemployment_rate", "consumer_spending"])
-
     for col in ["unemployment_rate_diff", "consumer_spending_diff"]:
         if col in df.columns:
             result = test_stationarity(df[col], col)
@@ -102,7 +99,6 @@ for col in ["unemployment_rate", "consumer_spending"]:
         "Consumer Spending (Billions)",
         output_dir / "unemployment_consumer_spending.png",
     )
-
     for test in config["analysis"]["test_directions"]:
         logging.info(f"\n{test['description']}")
     try:

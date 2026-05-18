@@ -72,141 +72,84 @@ def download_prices(
 
 def prepare_end_date() -> None:
     end_date = datetime.datetime.now()
-
     start_date = end_date - datetime.timedelta(days=YEAR_LOOKBACK * 365)
-
     df = download_prices(TICKERS, start_date, end_date)
-
     df.to_csv("shell_brent_returns.csv")
-
     corr_levels = df[["Shell_Close", "Brent_Close"]].corr()
-
     logging.info("Correlation (levels):\n%s", corr_levels)
-
     plt.figure(figsize=(10, 8))
-
     sns.heatmap(corr_levels, annot=True, cmap="coolwarm", center=0)
-
     plt.title("Correlation heatmap: Shell vs Brent (levels)")
-
     plt.tight_layout()
-
     plt.show()
 
 
 def prepare_x() -> None:
     X = sm.add_constant(df["Brent_Close"])
-
     ols = sm.OLS(df["Shell_Close"], X).fit()
-
     logging.info("OLS (Shell_Close ~ Brent_Close):\n%s", ols.summary())
-
     logging.info("\nStationarity — levels")
-
     check_stationarity(df["Shell_Close"], "Shell_Close")
-
     check_stationarity(df["Brent_Close"], "Brent_Close")
-
     logging.info("\nStationarity — returns")
-
     check_stationarity(df["Shell_Returns"], "Shell_Returns")
-
     check_stationarity(df["Brent_Returns"], "Brent_Returns")
-
     logging.info(
         "\nGranger causality (returns): does Brent Granger-cause Shell?\n  statsmodels tests whether column 1 helps predict column 0."
     )
-
     grangercausalitytests(df[["Shell_Returns", "Brent_Returns"]], maxlag=MAX_LAG)
-
     logging.info("\nGranger causality (returns): does Shell Granger-cause Brent?")
-
     grangercausalitytests(df[["Brent_Returns", "Shell_Returns"]], maxlag=MAX_LAG)
-
     logging.info("\nKey statistics")
-
     logging.info("R-squared (OLS levels): %.4f", ols.rsquared)
-
     logging.info("Correlation (levels): %.4f", corr_levels.iloc[0, 1])
-
     ret_corr = df[["Shell_Returns", "Brent_Returns"]].corr().iloc[0, 1]
-
     logging.info("Correlation (returns): %.4f", ret_corr)
-
     logging.info(
         "Daily vol (std of returns): Shell %.2f%%, Brent %.2f%%",
         df["Shell_Returns"].std() * 100,
         df["Brent_Returns"].std() * 100,
     )
-
     df[["Shell_Close", "Brent_Close"]].plot(figsize=(12, 6))
-
     plt.title("Shell vs Brent (close)")
-
     plt.xlabel("Date")
-
     plt.ylabel("Price")
-
     plt.tight_layout()
-
     plt.show()
 
 
 def figure() -> None:
     plt.figure(figsize=(10, 6))
-
     plt.scatter(df["Brent_Close"], df["Shell_Close"], alpha=0.5)
-
     plt.plot(df["Brent_Close"], ols.predict(X), color="red", linewidth=2)
-
     plt.xlabel("Brent (proxy) close")
-
     plt.ylabel("Shell close")
-
     plt.title("Shell vs Brent with OLS line")
-
     plt.tight_layout()
-
     plt.show()
 
 
 def figure_2() -> None:
     plt.figure(figsize=(12, 6))
-
     plt.plot(df.index, df["Shell_Returns"], label="Shell returns", alpha=0.7)
-
     plt.plot(df.index, df["Brent_Returns"], label="Brent returns", alpha=0.7)
-
     plt.title("Daily returns")
-
     plt.xlabel("Date")
-
     plt.ylabel("Return")
-
     plt.legend()
-
     plt.grid(True)
-
     plt.tight_layout()
-
     plt.show()
 
 
 def figure_3() -> None:
     plt.figure(figsize=(10, 6))
-
     plt.scatter(df["Brent_Returns"], df["Shell_Returns"], alpha=0.5)
-
     plt.xlabel("Brent returns")
-
     plt.ylabel("Shell returns")
-
     plt.title("Shell returns vs Brent returns")
-
     plt.grid(True)
-
     plt.tight_layout()
-
     plt.show()
 
 
